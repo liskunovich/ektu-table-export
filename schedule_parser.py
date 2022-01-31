@@ -23,7 +23,24 @@ def get_html(url, params=None):
 def get_table(html):
     data = []
     soup = BeautifulSoup(html, 'lxml')
-    table = soup.find_all('table', attrs={'class': 'lineItemsTable'})
+    table = soup.find_all('table', {'id': 'tblSchedule'})
     get_group_name(html)
-    print(html)
+    # print(html)
+
+
+def get_cell_info(html):
+    row_data = []
+    soup = BeautifulSoup(html, 'lxml')
+    table = soup.find_all('td')
+    for row in table:
+        row_data.append(row)
+    row_data = row_data[15::]
+    # rows = soup.find_all("tr")
+    #
+    # for row in rows:
+    #     element = row.find_all("th")
+    #     row_data.append(element)
+    # row_data = [cell for cell in row_data if len(cell) > 0]
+    print(row_data)
+
 
