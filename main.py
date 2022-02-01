@@ -1,13 +1,10 @@
 from bs4 import BeautifulSoup
 from fake_headers import Headers
 from schedule_parser import get_html, get_group_name, get_cell_info
-from schedule_parser import get_table
+from schedule_parser import get_table, URL, headers
 import time
 import requests
 import urllib3
-
-URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12072"
-headers = Headers(headers=True)
 
 
 def parse():

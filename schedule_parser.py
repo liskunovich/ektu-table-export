@@ -3,7 +3,7 @@ from fake_headers import Headers
 from bs4 import BeautifulSoup
 import re
 
-URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12072"
+URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12277"
 headers = Headers(headers=True)
 
 
@@ -28,13 +28,19 @@ def get_table(html):
     # print(html)
 
 
+def delete_links(soup):
+    for a in soup.findAll('a'):
+        a.replaceWithChildren()
+
+
 def get_cell_info(html):
     row_data = []
     soup = BeautifulSoup(html, 'lxml')
+    delete_links(soup)
     table = soup.find_all('td')
     for row in table:
         row_data.append(row)
-    row_data = row_data[15::]
+    row_data = row_data[6::]
     # rows = soup.find_all("tr")
     #
     # for row in rows:
@@ -43,4 +49,6 @@ def get_cell_info(html):
     # row_data = [cell for cell in row_data if len(cell) > 0]
     print(row_data)
 
-
+# def check_every_cell(rows = []):
+#     for i in range(6):
+#
