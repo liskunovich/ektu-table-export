@@ -3,8 +3,9 @@ from fake_headers import Headers
 from bs4 import BeautifulSoup
 import re
 
-URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12277"
+URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12265"
 headers = Headers(headers=True)
+data = []
 
 
 def get_group_name(html):
@@ -21,34 +22,17 @@ def get_html(url, params=None):
 
 
 def get_table(html):
-    data = []
     soup = BeautifulSoup(html, 'lxml')
-    table = soup.find_all('table', {'id': 'tblSchedule'})
-    get_group_name(html)
-    # print(html)
+    table = soup.find('table', {'id': 'tblSchedule'})
+    rows = table.find_all('tr', recursive=False)
+    rows = rows[1:]
+    for row in rows:
+        cols = row.find_all('td')
+        # cols = [re.sub(r'\n+', " ", ele.text).strip() for ele in cols]
+        data.append([ele for ele in cols if ele])
+    print(data)
+    # get_group_name(html)
 
 
-def delete_links(soup):
-    for a in soup.findAll('a'):
-        a.replaceWithChildren()
-
-
-def get_cell_info(html):
-    row_data = []
-    soup = BeautifulSoup(html, 'lxml')
-    delete_links(soup)
-    table = soup.find_all('td')
-    for row in table:
-        row_data.append(row)
-    row_data = row_data[6::]
-    # rows = soup.find_all("tr")
-    #
-    # for row in rows:
-    #     element = row.find_all("th")
-    #     row_data.append(element)
-    # row_data = [cell for cell in row_data if len(cell) > 0]
-    print(row_data)
-
-# def check_every_cell(rows = []):
-#     for i in range(6):
-#
+def get_cell_info(table):
+    pass

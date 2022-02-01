@@ -1,6 +1,6 @@
 from bs4 import BeautifulSoup
 from fake_headers import Headers
-from schedule_parser import get_html, get_group_name, get_cell_info
+from schedule_parser import get_html, get_group_name
 from schedule_parser import get_table, URL, headers
 import time
 import requests
@@ -13,7 +13,6 @@ def parse():
         print("Site is working")
         get_table(html.text)
         get_group_name(html.text)
-        get_cell_info(html.text)
     else:
         print("Site is not working")
 
