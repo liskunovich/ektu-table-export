@@ -3,9 +3,15 @@ from fake_headers import Headers
 from bs4 import BeautifulSoup
 import re
 
-URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12265"
+URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12072"
 headers = Headers(headers=True)
 data = []
+week = {"1": "Понедельник",
+        "2": "Вторник",
+        "3": "Среда",
+        "4": "Четверг",
+        "5": "Пятница",
+        "6": "Суббота"}
 
 
 def get_group_name(html):
@@ -30,9 +36,19 @@ def get_table(html):
         cols = row.find_all('td')
         # cols = [re.sub(r'\n+', " ", ele.text).strip() for ele in cols]
         data.append([ele for ele in cols if ele])
-    print(data)
+    # print(data[0])
     # get_group_name(html)
+    # print(data[0])
+    get_cell_info(data)
 
 
-def get_cell_info(table):
-    pass
+def get_cell_info(data_table):
+    for i in range(1):
+        day_count = 0
+        for ele in data_table[i]:
+            day_count += 1
+            if ele.text == " ":
+                print("Free Time")
+            else:
+                print(ele.text)
+                # print(week[f'{day_count}'])
