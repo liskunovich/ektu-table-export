@@ -3,9 +3,12 @@ from fake_headers import Headers
 from bs4 import BeautifulSoup
 import re
 
+
 URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12072"
 headers = Headers(headers=True)
 data = []
+current_status = 0
+current_day = " "
 week = {"1": "Понедельник",
         "2": "Вторник",
         "3": "Среда",
@@ -28,15 +31,14 @@ def get_html(url, params=None):
 
 
 def get_table(html):
-    soup = BeautifulSoup(html, 'lxml')
+    soup = BeautifulSoup(re.sub(r'<br/>', "|", html), 'lxml')
     table = soup.find('table', {'id': 'tblSchedule'})
     rows = table.find_all('tr', recursive=False)
     rows = rows[1:]
     for row in rows:
-        cols = row.find_all('td')
-        # cols = [re.sub(r'\n+', " ", ele.text).strip() for ele in cols]
-        data.append([ele for ele in cols if ele])
-    # print(data[0])
+        cols = row.find_all('td', {'class': 'td1'})
+        cols = [re.sub(r'\n+', " ", ele.text).strip() for ele in cols]
+        data.append([list(map(lambda x: x.strip(), ele.split("|"))) for ele in cols])
     # get_group_name(html)
     # print(data[0])
     get_cell_info(data)
@@ -47,8 +49,8 @@ def get_cell_info(data_table):
         day_count = 0
         for ele in data_table[i]:
             day_count += 1
-            if ele.text == " ":
-                print("Free Time")
+            if ele == [""]:
+                pass
             else:
-                print(ele.text)
-                # print(week[f'{day_count}'])
+                current_day = week[f'{day_count}']
+
