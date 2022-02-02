@@ -3,7 +3,6 @@ from fake_headers import Headers
 from bs4 import BeautifulSoup
 import re
 
-
 URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12072"
 headers = Headers(headers=True)
 data = []
@@ -52,5 +51,4 @@ def get_cell_info(data_table):
             if ele == [""]:
                 pass
             else:
-                current_day = week[f'{day_count}']
-
+                current_day = week[f'{day_count}']  # local storage
