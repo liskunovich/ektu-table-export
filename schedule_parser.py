@@ -52,3 +52,5 @@ def get_cell_info(data_table):
                 pass
             else:
                 current_day = week[f'{day_count}']  # local storage
+                print(current_day)
+                print(ele)
