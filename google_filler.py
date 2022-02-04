@@ -6,8 +6,8 @@ from googleapiclient.discovery import build
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
-calendarId = 'q0p4gvafp5snfttkmej8jmggmk@group.calendar.google.com'  # in calendar settings
-SERVICE_ACCOUNT_FILE = 'mypythonapp-340213-f8f6171f3609.json'  # in service acc by creating key
+calendarId = '2eeo0n10e1oqgfh42ul503bvc4@group.calendar.google.com'  # in calendar settings
+SERVICE_ACCOUNT_FILE = 'spheric-hawk-340206-19cc1befa5b4.json'  # in service acc by creating key
 
 
 class GoogleCalendar(object):
@@ -22,10 +22,10 @@ class GoogleCalendar(object):
             'summary': 'test event',
             'description': 'some info',
             'start': {
-                'dateTime': '2022-02-03T03:00:00+03:00',
+                'dateTime': '2022-02-05T07:00:00+03:00',
             },
             'end': {
-                'dateTime': '2022-02-03T05:30:00+03:00',
+                'dateTime': '2022-02-05T07:30:00+03:00',
             }
         }
         return event
