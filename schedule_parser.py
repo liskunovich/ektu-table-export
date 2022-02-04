@@ -36,7 +36,7 @@ def get_table(html):
     rows = rows[1:]
     for row in rows:
         cols = row.find_all('td', {'class': 'td1'})
-        cols = [re.sub(r'\n+', " ", ele.text).strip() for ele in cols]
+        cols = [re.sub(r'\s+', " ", ele.text).strip() for ele in cols]
         data.append([list(map(lambda x: x.strip(), ele.split("|"))) for ele in cols])
     # get_group_name(html)
     # print(data[0])
@@ -51,4 +51,7 @@ def get_cell_info(data_table):
             if ele == [""]:
                 pass
             else:
+                print(ele)
                 current_day = week[f'{day_count}']  # local storage
+                auditory = ele[0]
+
