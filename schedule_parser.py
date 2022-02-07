@@ -3,7 +3,9 @@ from fake_headers import Headers
 from bs4 import BeautifulSoup
 import re
 
-URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12072"
+# URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12072" # BT
+URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12265"  # ПН
+
 headers = Headers(headers=True)
 data = []
 current_status = 0
@@ -14,6 +16,18 @@ week = {"1": "Понедельник",
         "4": "Четверг",
         "5": "Пятница",
         "6": "Суббота"}
+
+time_dict = {"0": "08:00 - 08:50",
+             "1": "08:55 - 09:45",
+             "2": "10:10 - 11:00",
+             "3": "11:05 - 11:55",
+             "4": "12:55 - 13:45",
+             "5": "13:50 - 14:40",
+             "6": "15:05 - 15:55",
+             "7": "16:00 - 16:50",
+             "8": "17:05 - 17:55",
+             "9": "18:05 - 18:55"
+             }
 
 
 def get_group_name(html):
@@ -44,14 +58,24 @@ def get_table(html):
 
 
 def get_cell_info(data_table):
-    for i in range(1):
+    currently_time_count = 0
+    for i in range(3):
         day_count = 0
-        for ele in data_table[i]:
+        for cell in data_table[i]:
             day_count += 1
-            if ele == [""]:
+            if cell == [""]:
                 pass
             else:
-                print(ele)
-                current_day = week[f'{day_count}']  # local storage
-                auditory = ele[0]
+                subject_day = week[f'{day_count}']
+                subject_time = re.search(r'\d{2}:\d{2}\s-\s\d{2}:\d{2}', cell[0]).group(0) if check_time_exist(
+                    cell[0]) else time_dict[
+                    f'{currently_time_count}']
+                print(subject_time, subject_day)
+        currently_time_count += 1
 
+
+def check_time_exist(string):
+    if re.match(r'\d{2}:\d{2}\s-\s\d{2}:\d{2}', string):
+        return True
+    else:
+        return False

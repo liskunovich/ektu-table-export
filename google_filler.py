@@ -9,6 +9,10 @@ SCOPES = ['https://www.googleapis.com/auth/calendar']
 calendarId = '2eeo0n10e1oqgfh42ul503bvc4@group.calendar.google.com'  # in calendar settings
 SERVICE_ACCOUNT_FILE = 'spheric-hawk-340206-19cc1befa5b4.json'  # in service acc by creating key
 
+tz = datetime.timezone(offset=datetime.timedelta(hours=3), name='Almaty')
+time = datetime.datetime.now(tz=tz)
+print(time.weekday())
+print(time)
 
 class GoogleCalendar(object):
 
@@ -23,10 +27,15 @@ class GoogleCalendar(object):
             'description': 'some info',
             'start': {
                 'dateTime': '2022-02-05T07:00:00+03:00',
+                'timeZone': 'Asia/Almaty'
             },
             'end': {
                 'dateTime': '2022-02-05T07:30:00+03:00',
-            }
+                'timeZone': 'Asia/Almaty'
+            },
+            'recurrence': [
+                'RRULE:FREQ=WEEKLY;UNTIL=20220301T170000Z',
+            ]
         }
         return event
 
@@ -53,14 +62,14 @@ class GoogleCalendar(object):
             print(start, event['summary'])
 
 
-calendar = GoogleCalendar()
-print("+ - create event\n? - print event list\n")
-c = input()
-
-if c == '+':
-    event = calendar.create_event_dict()
-    calendar.create_event(event)
-elif c == '?':
-    calendar.get_events_list()
-else:
-    pass
+# calendar = GoogleCalendar()
+# print("+ - create event\n? - print event list\n")
+# c = input()
+#
+# if c == '+':
+#     event = calendar.create_event_dict()
+#     calendar.create_event(event)
+# elif c == '?':
+#     calendar.get_events_list()
+# else:
+#     pass
