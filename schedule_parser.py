@@ -36,11 +36,11 @@ event = {
     'summary': 'test event',
     'description': 'some info',
     'start': {
-        'dateTime': '2022-02-08T07:00:00+03:00',
+        'dateTime': '2022-02-09T07:00:00+03:00',
         'timeZone': 'Asia/Almaty'
     },
     'end': {
-        'dateTime': '2022-02-08T07:30:00+03:00',
+        'dateTime': '2022-02-10T07:30:00+03:00',
         'timeZone': 'Asia/Almaty'
     },
     'recurrence': [
