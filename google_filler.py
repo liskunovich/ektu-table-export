@@ -1,5 +1,7 @@
 from __future__ import print_function
 import datetime
+import json
+
 import googleapiclient
 import requests
 from google.oauth2 import service_account
@@ -15,6 +17,8 @@ tz = datetime.timezone(offset=datetime.timedelta(hours=3), name='Almaty')
 time = datetime.datetime.now(tz=tz)
 print(time.weekday())
 print(time)
+
+id_list = []
 
 
 class GoogleCalendar(object):
@@ -32,7 +36,8 @@ class GoogleCalendar(object):
     def create_event(self, event):
         e = self.service.events().insert(calendarId=calendarId,
                                          body=event).execute()
-        print('Event created: %s' % (e.get('id')))
+        self.save_to_json(e.get('id'))
+        print('Event created: %s' % e.get('id'))
 
     # вывод списка из десяти предстоящих событий
     def get_events_list(self):
@@ -51,23 +56,51 @@ class GoogleCalendar(object):
             print(start, event['summary'])
 
     def clear_cal(self):
-        calendars = self.service.calendars()
-        self.service.calendars().clear(calendarId='primary').execute()
+        events_result = self.service.events().list(calendarId=calendarId,
+                                                   timeMin='2022-01-01T07:00:00+03:00',
+                                                   maxResults=2500, singleEvents=True,
+                                                   orderBy='startTime').execute()
+        for i in range(len(self.get_from_json())):
+            self.service.events().delete(calendarId='onceuponatimeinektu@gmail.com',
+                                         eventId=f'{self.get_from_json()[i]}').execute()
+        self.clear_json()
+
+    def save_to_json(self, id):
+        content = None
+        with open("id_database.json", "r") as file:
+            content = file.read()
+            content = json.loads(content) if content != '' else []
+        with open("id_database.json", "w") as file:
+            content.append(id)
+            file.write(json.dumps(content))
+
+    def get_from_json(self):
+        content = None
+        with open("id_database.json", "r") as file:
+            content = file.read()
+            content = json.loads(content) if content != '' else []
+        return content
+
+    def clear_json(self):
+        with open("id_database.json", "w") as file:
+            file.write(json.dumps([]))
+
 
 calendar = GoogleCalendar()
-# calendar.clear_cal()
-# print("+ - create event\n? - print event list\n")
-# c = input()
-#
-# if c == '+':
-#     cal_event = event
-#     calendar.create_event(cal_event)
-# elif c == '?':
-#     calendar.get_events_list()
-# else:
-#     pass
-# onceuponatimeinektu@gmail.com
-# 59"NgdSb2^#Y%`{v
+
+print("+ - create event\n? - print event list\n")
+c = input()
+
+if c == '+':
+    cal_event = event
+    calendar.create_event(cal_event)
+elif c == '?':
+    calendar.get_events_list()
+elif c == "clear":
+    calendar.clear_cal()
+else:
+    pass
+
 # 115113879910396707501
 #
 #
