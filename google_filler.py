@@ -1,13 +1,14 @@
 from __future__ import print_function
 import datetime
 import googleapiclient
+import requests
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from schedule_parser import event
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
-calendarId = '2eeo0n10e1oqgfh42ul503bvc4@group.calendar.google.com'  # in calendar settings
+calendarId = 'onceuponatimeinektu@gmail.com'  # in calendar settings
 SERVICE_ACCOUNT_FILE = 'spheric-hawk-340206-19cc1befa5b4.json'  # in service acc by creating key
 
 tz = datetime.timezone(offset=datetime.timedelta(hours=3), name='Almaty')
@@ -51,11 +52,10 @@ class GoogleCalendar(object):
 
     def clear_cal(self):
         calendars = self.service.calendars()
-        self.service.calendars().clear('proimary').execute()
-
+        self.service.calendars().clear(calendarId='primary').execute()
 
 calendar = GoogleCalendar()
-calendar.clear_cal()
+# calendar.clear_cal()
 # print("+ - create event\n? - print event list\n")
 # c = input()
 #
@@ -66,3 +66,9 @@ calendar.clear_cal()
 #     calendar.get_events_list()
 # else:
 #     pass
+# onceuponatimeinektu@gmail.com
+# 59"NgdSb2^#Y%`{v
+# 115113879910396707501
+#
+#
+# https://support.sisense.com/kb/en/article/google-calendar-python-export-script
