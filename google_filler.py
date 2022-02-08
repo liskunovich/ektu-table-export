@@ -3,6 +3,7 @@ import datetime
 import googleapiclient
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from schedule_parser import event
 
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
@@ -14,6 +15,7 @@ time = datetime.datetime.now(tz=tz)
 print(time.weekday())
 print(time)
 
+
 class GoogleCalendar(object):
 
     def __init__(self):
@@ -21,23 +23,9 @@ class GoogleCalendar(object):
         self.service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
 
     # создание словаря с информацией о событии
-    def create_event_dict(self):
-        event = {
-            'summary': 'test event',
-            'description': 'some info',
-            'start': {
-                'dateTime': '2022-02-05T07:00:00+03:00',
-                'timeZone': 'Asia/Almaty'
-            },
-            'end': {
-                'dateTime': '2022-02-05T07:30:00+03:00',
-                'timeZone': 'Asia/Almaty'
-            },
-            'recurrence': [
-                'RRULE:FREQ=WEEKLY;UNTIL=20220301T170000Z',
-            ]
-        }
-        return event
+    # def create_event_dict(self):
+    #
+    #     return event
 
     # создание события в календаре
     def create_event(self, event):
@@ -61,14 +49,19 @@ class GoogleCalendar(object):
             start = event['start'].get('dateTime', event['start'].get('date'))
             print(start, event['summary'])
 
+    def clear_cal(self):
+        calendars = self.service.calendars()
+        self.service.calendars().clear('proimary').execute()
 
-# calendar = GoogleCalendar()
+
+calendar = GoogleCalendar()
+calendar.clear_cal()
 # print("+ - create event\n? - print event list\n")
 # c = input()
 #
 # if c == '+':
-#     event = calendar.create_event_dict()
-#     calendar.create_event(event)
+#     cal_event = event
+#     calendar.create_event(cal_event)
 # elif c == '?':
 #     calendar.get_events_list()
 # else:
