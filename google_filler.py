@@ -1,12 +1,14 @@
 from __future__ import print_function
 import datetime
 import googleapiclient
+import requests
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from schedule_parser import event
 
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.events']
 
-calendarId = 'lm2kkn19j071fau1gu8j2224fk@group.calendar.google.com'  # in calendar settings
+calendarId = 'onceuponatimeinektu@gmail.com'  # in calendar settings
 SERVICE_ACCOUNT_FILE = 'spheric-hawk-340206-19cc1befa5b4.json'  # in service acc by creating key
 
 tz = datetime.timezone(offset=datetime.timedelta(hours=3), name='Almaty')
@@ -22,23 +24,9 @@ class GoogleCalendar(object):
         self.service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
 
     # создание словаря с информацией о событии
-    def create_event_dict(self):
-        event = {
-            'summary': 'test event',
-            'description': 'some info',
-            'start': {
-                'dateTime': '2022-02-07T07:00:00+03:00',
-                'timeZone': 'Asia/Almaty'
-            },
-            'end': {
-                'dateTime': '2022-02-08T07:30:00+03:00',
-                'timeZone': 'Asia/Almaty'
-            },
-            'recurrence': [
-                'RRULE:FREQ=WEEKLY;UNTIL=20220301T170000Z',
-            ]
-        }
-        return event
+    # def create_event_dict(self):
+    #
+    #     return event
 
     # создание события в календаре
     def create_event(self, event):
@@ -62,16 +50,25 @@ class GoogleCalendar(object):
             start = event['start'].get('dateTime', event['start'].get('date'))
             print(start, event['summary'])
 
+    def clear_cal(self):
+        calendars = self.service.calendars()
+        self.service.calendars().clear(calendarId='primary').execute()
 
 calendar = GoogleCalendar()
-
-print("+ - create event\n? - print event list\n")
-c = input()
-
-if c == '+':
-    event = calendar.create_event_dict()
-    calendar.create_event(event)
-elif c == '?':
-    calendar.get_events_list()
-else:
-    pass
+# calendar.clear_cal()
+# print("+ - create event\n? - print event list\n")
+# c = input()
+#
+# if c == '+':
+#     cal_event = event
+#     calendar.create_event(cal_event)
+# elif c == '?':
+#     calendar.get_events_list()
+# else:
+#     pass
+# onceuponatimeinektu@gmail.com
+# 59"NgdSb2^#Y%`{v
+# 115113879910396707501
+#
+#
+# https://support.sisense.com/kb/en/article/google-calendar-python-export-script
