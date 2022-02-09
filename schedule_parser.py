@@ -1,10 +1,13 @@
+import datetime
+
 import requests
 from fake_headers import Headers
 from bs4 import BeautifulSoup
 import re
+from google_filler import GoogleCalendar
 
-URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12072"  # BT
-# URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12265"  # ПН
+# URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12072"  # BT
+URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12265"  # ПН
 
 headers = Headers(headers=True)
 data = []
@@ -32,21 +35,7 @@ time_dict = {
     "9": "18:05 - 18:55"
 }
 
-event = {
-    'summary': 'test event',
-    'description': 'some info',
-    'start': {
-        'dateTime': '2022-02-09T07:00:00+03:00',
-        'timeZone': 'Asia/Almaty'
-    },
-    'end': {
-        'dateTime': '2022-02-10T07:30:00+03:00',
-        'timeZone': 'Asia/Almaty'
-    },
-    'recurrence': [
-        'RRULE:FREQ=WEEKLY;UNTIL=20220301T170000Z',
-    ]
-}
+
 
 
 def get_group_name(html):
@@ -77,8 +66,10 @@ def get_table(html):
 
 
 def get_cell_info(data_table):
+    calendar = GoogleCalendar()
     currently_time_count = 0
-    for i in range(len(data_table)):
+    # for i in range(len(data_table)):
+    for i in range(1):
         day_count = 0
         for cell in data_table[i]:
             day_count += 1
@@ -89,7 +80,32 @@ def get_cell_info(data_table):
                 subject_time = re.search(r'\d{2}:\d{2}\s-\s\d{2}:\d{2}', cell[0]).group(0) if check_time_exist(
                     cell[0]) else time_dict[
                     f'{currently_time_count}']
-                print(subject_time, subject_day)
+                auditory = re.search(r'\[.*?\]', cell[0]).group(0) if check_time_exist(cell[0]) else cell[0]
+                # tz = datetime.timezone(offset=datetime.timedelta(hours=3), name='Almaty')
+                # time = datetime.datetime.now(tz=tz)
+                # print(time.weekday())
+                # print(time)
+                # start_date =
+                # end_date =
+                start_time = re.search(r'[^-\s.]*', subject_time).group(0)
+                end_time = re.search(r'[^^\d][^\-\s]{4}\d', subject_time).group(0).strip()
+                event = {
+                    'summary': f'{auditory}{cell[3]}',
+                    'description': f'{cell[4]}', # Teacher or Type or What? Solve it
+                    'start': {
+                        'dateTime': f'2022-02-09T{start_time}:00+00:00',
+                        'timeZone': 'Asia/Almaty'
+                    },
+                    'end': {
+                        'dateTime': f'2022-02-10T{end_time}:00+00:00',
+                        'timeZone': 'Asia/Almaty'
+                    },
+                    'recurrence': [
+                        'RRULE:FREQ=WEEKLY;UNTIL=20220601T170000Z',
+                    ]
+                }
+                # print(subject_time, subject_day)
+                print(event)
         currently_time_count += 1
 
 

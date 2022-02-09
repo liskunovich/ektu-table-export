@@ -6,7 +6,7 @@ import googleapiclient
 import requests
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
-from schedule_parser import event
+# from schedule_parser import event
 
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.events']
 
@@ -86,20 +86,19 @@ class GoogleCalendar(object):
             file.write(json.dumps([]))
 
 
-calendar = GoogleCalendar()
 
-print("+ - create event\n? - print event list\n")
-c = input()
+# print("+ - create event\n? - print event list\n")
+# c = input()
 
-if c == '+':
-    cal_event = event
-    calendar.create_event(cal_event)
-elif c == '?':
-    calendar.get_events_list()
-elif c == "clear":
-    calendar.clear_cal()
-else:
-    pass
+# if c == '+':
+#     cal_event = event
+#     calendar.create_event(cal_event)
+# elif c == '?':
+#     calendar.get_events_list()
+# elif c == "clear":
+#     calendar.clear_cal()
+# else:
+#     pass
 
 # 115113879910396707501
 #

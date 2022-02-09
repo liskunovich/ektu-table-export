@@ -12,10 +12,10 @@ def parse():
     html = get_html(URL)
     if html.status_code == 200:
         print("Site is working")
-        # get_table(html.text)
+        get_table(html.text)
         # get_group_name(html.text)
-        export()
-        group_name = get_group_name(html.text)
+        # export()
+        # group_name = get_group_name(html.text)
     else:
         print("Site is not working")
 
