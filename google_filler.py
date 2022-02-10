@@ -28,7 +28,7 @@ class GoogleCalendar(object):
         e = self.service.events().insert(calendarId=calendarId,
                                          body=event).execute()
         self.save_to_json(e.get('id'))
-        print('Event created: %s' % e.get('id'))
+        # print('Event created: %s' % e.get('id'))
 
     # вывод списка из десяти предстоящих событий
     def get_events_list(self):

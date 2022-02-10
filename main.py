@@ -1,14 +1,5 @@
-
-from bs4 import BeautifulSoup
-from fake_headers import Headers
-from schedule_parser import get_html, get_group_name, get_cell_info
-from schedule_parser import get_table, URL, headers
-from calendar_exporter import export
-import time
-from google_filler import GoogleCalendar
-import requests
-import urllib3
-
+from schedule_parser import get_html
+from schedule_parser import get_table, URL
 
 
 def parse():

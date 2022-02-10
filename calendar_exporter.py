@@ -42,12 +42,12 @@ def setting_chrome_options():
 def export():
     driver = webdriver.Chrome(options=setting_chrome_options())
     driver.get(URL)
-    print('Starting input login')
+    # print('Starting input login')
     time.sleep(1)
     driver.find_element(By.XPATH, '//*[@id="identifierId"]').send_keys("onceuponatimeinektu@gmail.com")
     driver.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button/span').click()
     time.sleep(1)
-    print('Starting input pwd')
+    # print('Starting input pwd')
     driver.find_element(By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input').send_keys(
         '59"NgdSb2^#Y%`{v')
     driver.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button/span').click()

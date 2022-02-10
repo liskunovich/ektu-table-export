@@ -14,6 +14,7 @@ headers = Headers(headers=True)
 data = []
 current_status = 0
 current_day = " "
+
 week = {
     "0": "monday",
     "1": "tuesday",
@@ -112,6 +113,7 @@ def get_cell_info(data_table):
                 }
                 calendar.create_event(event)
         currently_time_count += 1
+    print("All Events Are Created")
     export()
     calendar.clear_cal()
 
