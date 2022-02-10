@@ -4,22 +4,23 @@ import requests
 from fake_headers import Headers
 from bs4 import BeautifulSoup
 import re
+
+from calendar_exporter import export
 from google_filler import GoogleCalendar
 
-# URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12072"  # BT
-URL = "https://www.do.ektu.kz/PReports/Schedule/ScheduleGroup.asp?page=3&GroupID=12265"  # ПН
+URL = input("Введите ссылку на Ваше расписание:\n")
 
 headers = Headers(headers=True)
 data = []
 current_status = 0
 current_day = " "
 week = {
-    "1": "Понедельник",
-    "2": "Вторник",
-    "3": "Среда",
-    "4": "Четверг",
-    "5": "Пятница",
-    "6": "Суббота"
+    "0": "monday",
+    "1": "tuesday",
+    "2": "wednesday",
+    "3": "thursday",
+    "4": "friday",
+    "5": "saturday"
 }
 
 time_dict = {
@@ -34,8 +35,6 @@ time_dict = {
     "8": "17:05 - 17:55",
     "9": "18:05 - 18:55"
 }
-
-
 
 
 def get_group_name(html):
@@ -65,48 +64,55 @@ def get_table(html):
     get_cell_info(data)
 
 
+def next_closest(from_date, search_day):
+    WEEKDAYS = ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')
+    if isinstance(search_day, str):
+        search_day = WEEKDAYS.index(search_day.lower())
+
+    from_day = from_date.weekday()
+    different_days = search_day - from_day if from_day < search_day else 7 - from_day + search_day
+    correct_format = from_date + datetime.timedelta(days=different_days)
+    return correct_format.strftime("%Y-%m-%d")
+
+
 def get_cell_info(data_table):
     calendar = GoogleCalendar()
     currently_time_count = 0
-    # for i in range(len(data_table)):
-    for i in range(1):
+    for i in range(len(data_table)):
         day_count = 0
         for cell in data_table[i]:
             day_count += 1
             if cell == [""]:
                 pass
             else:
-                subject_day = week[f'{day_count}']
+                subject_day = week[f'{day_count - 1}']
                 subject_time = re.search(r'\d{2}:\d{2}\s-\s\d{2}:\d{2}', cell[0]).group(0) if check_time_exist(
                     cell[0]) else time_dict[
                     f'{currently_time_count}']
                 auditory = re.search(r'\[.*?\]', cell[0]).group(0) if check_time_exist(cell[0]) else cell[0]
-                # tz = datetime.timezone(offset=datetime.timedelta(hours=3), name='Almaty')
-                # time = datetime.datetime.now(tz=tz)
-                # print(time.weekday())
-                # print(time)
-                # start_date =
-                # end_date =
+                tz = datetime.timezone(offset=datetime.timedelta(hours=3), name='Almaty')
+                time = datetime.datetime.now(tz=tz)
+                event_date = next_closest(datetime.datetime.now(), subject_day)
                 start_time = re.search(r'[^-\s.]*', subject_time).group(0)
                 end_time = re.search(r'[^^\d][^\-\s]{4}\d', subject_time).group(0).strip()
                 event = {
-                    'summary': f'{auditory}{cell[3]}',
-                    'description': f'{cell[4]}', # Teacher or Type or What? Solve it
+                    'summary': f'{auditory}{cell[3]}',  # [Auditory/Online] Name_of_subject
+                    'description': f'{cell[4].capitalize()}',  # Type of lesson
                     'start': {
-                        'dateTime': f'2022-02-09T{start_time}:00+00:00',
+                        'dateTime': f'{event_date}T{start_time}:00+00:00',
                         'timeZone': 'Asia/Almaty'
                     },
                     'end': {
-                        'dateTime': f'2022-02-10T{end_time}:00+00:00',
+                        'dateTime': f'{event_date}T{end_time}:00+00:00',
                         'timeZone': 'Asia/Almaty'
                     },
                     'recurrence': [
-                        'RRULE:FREQ=WEEKLY;UNTIL=20220601T170000Z',
+                        f'RRULE:FREQ=WEEKLY;UNTIL={time.year}{str(int(time.strftime("%m")) + 5).zfill(2)}01T170000Z',
                     ]
                 }
-                # print(subject_time, subject_day)
-                print(event)
         currently_time_count += 1
+    export()
+    calendar.clear_cal()
 
 
 def check_time_exist(string):

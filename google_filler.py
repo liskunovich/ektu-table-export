@@ -13,10 +13,6 @@ SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.co
 calendarId = 'onceuponatimeinektu@gmail.com'  # in calendar settings
 SERVICE_ACCOUNT_FILE = 'spheric-hawk-340206-19cc1befa5b4.json'  # in service acc by creating key
 
-tz = datetime.timezone(offset=datetime.timedelta(hours=3), name='Almaty')
-time = datetime.datetime.now(tz=tz)
-print(time.weekday())
-print(time)
 
 id_list = []
 
@@ -27,10 +23,6 @@ class GoogleCalendar(object):
         credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
         self.service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
 
-    # создание словаря с информацией о событии
-    # def create_event_dict(self):
-    #
-    #     return event
 
     # создание события в календаре
     def create_event(self, event):
@@ -84,23 +76,3 @@ class GoogleCalendar(object):
     def clear_json(self):
         with open("id_database.json", "w") as file:
             file.write(json.dumps([]))
-
-
-
-# print("+ - create event\n? - print event list\n")
-# c = input()
-
-# if c == '+':
-#     cal_event = event
-#     calendar.create_event(cal_event)
-# elif c == '?':
-#     calendar.get_events_list()
-# elif c == "clear":
-#     calendar.clear_cal()
-# else:
-#     pass
-
-# 115113879910396707501
-#
-#
-# https://support.sisense.com/kb/en/article/google-calendar-python-export-script
