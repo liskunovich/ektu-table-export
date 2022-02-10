@@ -14,7 +14,7 @@ path_for_download = 'C:\\Users\\david\\PycharmProjects\\ektuTable\\timeTable\\da
 def is_file_downloaded():
     file_path = path_for_download + "\\onceuponatimeinektu@gmail.com.ical.zip"
     while not os.path.exists(file_path):
-        time.sleep(4)
+        time.sleep(2)
     if os.path.isfile(file_path):
         time.sleep(2)
         print("File Downloaded successfully..")
