@@ -110,6 +110,7 @@ def get_cell_info(data_table):
                         f'RRULE:FREQ=WEEKLY;UNTIL={time.year}{str(int(time.strftime("%m")) + 5).zfill(2)}01T170000Z',
                     ]
                 }
+                calendar.create_event(event)
         currently_time_count += 1
     export()
     calendar.clear_cal()
