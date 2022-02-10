@@ -10,6 +10,7 @@ import requests
 import urllib3
 
 
+
 def parse():
     html = get_html(URL)
     if html.status_code == 200:

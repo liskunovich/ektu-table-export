@@ -6,13 +6,13 @@ import googleapiclient
 import requests
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+
 # from schedule_parser import event
 
 SCOPES = ['https://www.googleapis.com/auth/calendar', 'https://www.googleapis.com/auth/calendar.events']
 
 calendarId = 'onceuponatimeinektu@gmail.com'  # in calendar settings
 SERVICE_ACCOUNT_FILE = 'spheric-hawk-340206-19cc1befa5b4.json'  # in service acc by creating key
-
 
 id_list = []
 
@@ -22,7 +22,6 @@ class GoogleCalendar(object):
     def __init__(self):
         credentials = service_account.Credentials.from_service_account_file(SERVICE_ACCOUNT_FILE, scopes=SCOPES)
         self.service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
-
 
     # создание события в календаре
     def create_event(self, event):
