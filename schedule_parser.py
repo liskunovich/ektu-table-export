@@ -99,11 +99,11 @@ def get_cell_info(data_table):
                     'summary': f'{auditory}{cell[3]}',  # [Auditory/Online] Name_of_subject
                     'description': f'{cell[4].capitalize()}',  # Type of lesson
                     'start': {
-                        'dateTime': f'{event_date}T{start_time}:00+00:00',
+                        'dateTime': f'{event_date}T{start_time}:00+06:00',
                         'timeZone': 'Asia/Almaty'
                     },
                     'end': {
-                        'dateTime': f'{event_date}T{end_time}:00+00:00',
+                        'dateTime': f'{event_date}T{end_time}:00+06:00',
                         'timeZone': 'Asia/Almaty'
                     },
                     'recurrence': [
