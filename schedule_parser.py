@@ -78,6 +78,7 @@ def next_closest(from_date, search_day):
 
 def get_cell_info(data_table):
     calendar = GoogleCalendar()
+    calendar.clear_cal()
     currently_time_count = 0
     for i in range(len(data_table)):
         day_count = 0

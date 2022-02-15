@@ -20,6 +20,16 @@ def is_file_downloaded():
         print("File Downloaded successfully..")
 
 
+def log_in(driver):
+    driver.find_element(By.XPATH, '//*[@id="identifierId"]').send_keys("onceuponatimeinektu@gmail.com")
+    driver.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button/span').click()
+    time.sleep(1)
+    # print('Starting input pwd')
+    driver.find_element(By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input').send_keys(
+        '59"NgdSb2^#Y%`{v')
+    driver.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button/span').click()
+
+
 def enable_download(driver):
     driver.command_executor._commands["send_command"] = ("POST", '/session/$sessionId/chromium/send_command')
     params = {'cmd': 'Page.setDownloadBehavior', 'params': {'behavior': 'allow', 'downloadPath': path_for_download}}
@@ -32,7 +42,6 @@ def setting_chrome_options():
     chrome_options.add_argument('--no-sandbox')
     chrome_options.add_argument("--window-size=1920x1080")
     chrome_options.add_argument(f'user-agent={user_agent}')
-    chrome_options.add_argument("--headless")
     prefs = {'download.default_directory': path_for_download,
              "download.prompt_for_download": False}
     chrome_options.add_experimental_option("prefs", prefs)
@@ -44,13 +53,7 @@ def export():
     driver.get(URL)
     # print('Starting input login')
     time.sleep(1)
-    driver.find_element(By.XPATH, '//*[@id="identifierId"]').send_keys("onceuponatimeinektu@gmail.com")
-    driver.find_element(By.XPATH, '//*[@id="identifierNext"]/div/button/span').click()
-    time.sleep(1)
-    # print('Starting input pwd')
-    driver.find_element(By.XPATH, '//*[@id="password"]/div[1]/div/div[1]/input').send_keys(
-        '59"NgdSb2^#Y%`{v')
-    driver.find_element(By.XPATH, '//*[@id="passwordNext"]/div/button/span').click()
+    log_in(driver)
     print('Starting download calendar')
     time.sleep(5)
     driver.find_element(By.XPATH, '//*[@id="YPCqFe"]/div/div/div/div[1]/div/div[5]/div[1]/a/span/span').click()
