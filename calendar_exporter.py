@@ -8,7 +8,7 @@ from selenium.webdriver.chrome.options import Options
 
 URL = 'https://calendar.google.com/calendar/u/2/r/settings/calendar/b25jZXVwb25hdGltZWluZWt0dUBnbWFpbC5jb20'
 user_agent = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.50 Safari/537.36'
-path_for_download = 'C:\\Users\\david\\PycharmProjects\\ektuTable\\timeTable\\data'
+path_for_download = os.getcwd() + "\data"
 
 
 def is_file_downloaded():

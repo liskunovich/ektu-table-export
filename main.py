@@ -13,10 +13,9 @@ def parse():
             print("File Exist")
         else:
             get_table(html.text)
-            os.rename('C:\\Users\\david\\PycharmProjects\\ektuTable\\timeTable\\data\\onceuponatimeinektu@gmail.com.ical.zip',
-                  f'C:\\Users\\david\\PycharmProjects\\ektuTable\\timeTable\\data\\{group_name}.zip')
+            os.rename(os.getcwd() + "\data" + "\onceuponatimeinektu@gmail.com.ical.zip",
+                  os.getcwd() + "\data" + f"\\{group_name}.zip")
     else:
         print("Site is not working")
-
 
 parse()
