@@ -1,21 +1,23 @@
-import os
+from all_schedule_links_parser import get_general_links_list
+from decorators import timer
+from individual_schedule_parser import parse_table, get_group_name
+from utilities import get_html
 
-from schedule_parser import get_html, get_group_name
-from schedule_parser import get_table, URL
 
-
-def parse():
-    html = get_html(URL)
+@timer
+def main(url):
+    html = get_html(url)
     if html.status_code == 200:
-        print("Site is working")
-        group_name = get_group_name(html.text)
-        if os.path.isfile(f'C:\\Users\\david\\PycharmProjects\\ektuTable\\timeTable\\data\\{group_name}.zip'):
-            print("File Exist")
-        else:
-            get_table(html.text)
-            os.rename(os.getcwd() + "\data" + "\onceuponatimeinektu@gmail.com.ical.zip",
-                  os.getcwd() + "\data" + f"\\{group_name}.zip")
+        parse_table(html.text, url)
     else:
-        print("Site is not working")
+        print('Site is not working')
 
-parse()
+
+# if __name__ == "__main__":
+#     main(input("Введите ссылку на расписание группы:\n"))
+
+if __name__ == "__main__":
+    links_list = get_general_links_list()
+    for element in links_list:
+        for link in element:
+            main(link)
