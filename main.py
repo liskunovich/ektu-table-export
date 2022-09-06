@@ -13,11 +13,11 @@ def main(url):
         print('Site is not working')
 
 
-# if __name__ == "__main__":
-#     main(input("Введите ссылку на расписание группы:\n"))
-
 if __name__ == "__main__":
-    links_list = get_general_links_list()
-    for element in links_list:
-        for link in element:
-            main(link)
+    main(input("Введите ссылку на расписание группы:\n"))
+
+# if __name__ == "__main__":
+#     links_list = get_general_links_list()
+#     for element in links_list:
+#         for link in element:
+#             main(link)

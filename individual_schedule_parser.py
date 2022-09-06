@@ -114,7 +114,7 @@ def check_time_exist(string):
 
 
 def save_to_ics(calendar, url):
-    directory = "C:\\Users\\david\\PycharmProjects\\ektuTable\\timeTable\\data"
+    directory = os.getcwd() + "/data/"
     f = open(os.path.join(directory, f'{get_group_name(get_html(url).text)}.ics'), 'wb')
     f.write(calendar.to_ical())
     f.close()
